@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./Global-Styles.scss";
+import getfilteredData from "./components/services/filterData"
+import useFetchAsync_Then from "./components/services/fetchData";
+import Header from "./components/main/Header.component";
+import Main from "./components/main/Main.Component";
+import API_URL from "./components/services/api";
 
-function App() {
+const App = () => {
+  const { data, isLoading, isError } = useFetchAsync_Then(API_URL);
+  const [sortInputs, setSortInputs] = React.useState({
+    searchInput: "",
+    sortByMktCap: false,
+    sortByPercentage: false,
+  });
+  const filteredData = getfilteredData(data, sortInputs);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header {...{ sortInputs, setSortInputs }} />
+      <Main {...{ filteredData, isLoading, isError }} />
+    </>
   );
-}
+};
 
 export default App;
